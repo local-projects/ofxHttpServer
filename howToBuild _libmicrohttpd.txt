@@ -1,0 +1,2 @@
+to build as 32bit
+./configure CC="gcc -arch i386" CXX="g++ -arch i386"
