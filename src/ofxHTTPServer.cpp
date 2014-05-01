@@ -9,8 +9,13 @@
 #include <cstring>
 #include <fstream>
 #include <map>
+#include "platform.h"
 
 using namespace std;
+
+static 	vector<string> allowedIPs; //this will etiher hold a list of ips, or nothing.
+									//if empty, no checking will be done, all connections will be accepted
+
 
 ofxHTTPServer ofxHTTPServer::instance;
 
@@ -199,6 +204,25 @@ ofxHTTPServer::~ofxHTTPServer() {
 	// TODO Auto-generated destructor stub
 }
 
+void ofxHTTPServer::setAllowed_IP_List( vector<string> listOfIPs){
+	allowedIPs = listOfIPs;
+}
+
+
+int ofxHTTPServer::on_client_connect(void* cls, const sockaddr* addr, socklen_t addrlen){
+
+	if (allowedIPs.size() > 0){
+		char buf[INET6_ADDRSTRLEN];
+		string ip = inet_ntop(addr->sa_family, addr->sa_data + 2, buf, INET6_ADDRSTRLEN);
+		cout << "ofxHTTPServer:on_client_connect() IP:" << ip << endl;
+		if( std::find(allowedIPs.begin(), allowedIPs.end(), ip) != allowedIPs.end() ){ //found it in our list
+			return MHD_YES;
+		}else{
+			return MHD_NO;
+		}
+	}
+	return MHD_YES;
+}
 
 
 int ofxHTTPServer::answer_to_connection(void *cls,
@@ -376,7 +400,7 @@ void ofxHTTPServer::start(unsigned _port, bool threaded) {
 	            MHD_OPTION_END);
 	}else{*/
 		http_daemon = MHD_start_daemon(threaded?MHD_USE_THREAD_PER_CONNECTION:MHD_USE_SELECT_INTERNALLY,
-				_port, NULL, NULL,
+				_port, on_client_connect, NULL,
 				&answer_to_connection, NULL, MHD_OPTION_NOTIFY_COMPLETED,
 	            &request_completed, NULL, MHD_OPTION_END);
 	//}

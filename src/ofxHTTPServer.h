@@ -72,6 +72,7 @@ public:
 	unsigned getNumberClients();
 
 	void setListener(ofxHTTPServerListener & listener);
+	void setAllowed_IP_List(vector<string> allowedIPs);
 
 
 	static int answer_to_connection(void *cls,
@@ -96,6 +97,8 @@ private:
 	ofMutex maxActiveClientsMutex;
 	ofxHTTPServerListener * listener;
 
+
+	static int on_client_connect(void* cls, const sockaddr* addr, socklen_t addrlen);
 	static int print_out_key (void *cls, enum MHD_ValueKind kind, const char *key, const char *value);
 	static int get_get_parameters (void *cls, enum MHD_ValueKind kind, const char *key, const char *value);
 
