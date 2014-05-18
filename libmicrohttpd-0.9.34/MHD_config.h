@@ -54,16 +54,16 @@
 #define HAVE_FSEEKO 1
 
 /* Define to 1 if you have the <gcrypt.h> header file. */
-/* #undef HAVE_GCRYPT_H */
+#define HAVE_GCRYPT_H 1
 
 /* Define to 1 if you have `gmtime_s' function (only for W32). */
 /* #undef HAVE_GMTIME_S */
 
 /* We have gnutls */
-#define HAVE_GNUTLS 0
+#define HAVE_GNUTLS true
 
 /* Define to 1 if you have the <gnutls/gnutls.h> header file. */
-/* #undef HAVE_GNUTLS_GNUTLS_H */
+#define HAVE_GNUTLS_GNUTLS_H 1
 
 /* Provides IPv6 headers */
 #define HAVE_INET6 1

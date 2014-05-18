@@ -1,2 +1,4 @@
 to build as 32bit
 ./configure CC="gcc -arch i386" CXX="g++ -arch i386"
+as 64 bit
+./configure CC="gcc -arch x86_64" CXX="g++ -arch x86_64" --disable-https --enable-static
