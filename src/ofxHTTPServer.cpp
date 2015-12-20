@@ -305,6 +305,7 @@ int ofxHTTPServer::answer_to_connection(void *cls,
 
 		ofxHTTPServerResponse response;
 		response.url = strurl;
+		response.connection = connection;
 		const char * referer = MHD_lookup_connection_value(connection,MHD_HEADER_KIND,MHD_HTTP_HEADER_REFERER);
 		if(referer){
 			response.referer = referer;
@@ -313,6 +314,7 @@ int ofxHTTPServer::answer_to_connection(void *cls,
 
 		if(strmethod=="GET"){
 			response.requestFields = con_info->fields;
+
 			if(instance.listener) instance.listener->getRequest(response);
 			//ofNotifyEvent(instance.getEvent,response);
 			if(response.errCode>=300 && response.errCode<400){
@@ -359,6 +361,7 @@ int ofxHTTPServer::answer_to_connection(void *cls,
 		ofFile file(instance.fsRoot + strurl,ofFile::ReadOnly,true);
 		if(!file.exists()){
 			ofxHTTPServerResponse response;
+			response.connection = connection;
 			response.errCode = 404;
 			response.url = strurl;
 

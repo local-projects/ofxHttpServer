@@ -31,6 +31,7 @@ class ofxHTTPServerResponse{
 public:
 	ofxHTTPServerResponse(){
 		errCode=200;
+		connection = NULL;
 	}
 	std::string url;
 	ofBuffer response;
@@ -42,6 +43,7 @@ public:
 
 	std::map<std::string,std::string> requestFields;
 	std::map<std::string,std::string> uploadedFiles;
+	struct MHD_Connection *connection;
 };
 
 class ofxHTTPServerListener{
