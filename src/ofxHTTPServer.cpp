@@ -16,8 +16,8 @@ using namespace std;
 static 	vector<string> allowedIPs; //this will etiher hold a list of ips, or nothing.
 									//if empty, no checking will be done, all connections will be accepted
 
-
 ofxHTTPServer ofxHTTPServer::instance;
+ofEvent<ofxHTTPServer::RequestInfo> ofxHTTPServer::eventRequestReceived = ofEvent<ofxHTTPServer::RequestInfo>();
 
 // Helper functions and structures only used internally by the server
 //------------------------------------------------------
@@ -127,6 +127,9 @@ void ofxHTTPServer::request_completed (void *cls, struct MHD_Connection *connect
 {
   connection_info *con_info = (connection_info*) *con_cls;
 
+	struct MHD_Connection{
+		char * url;
+	};
 
   if (NULL == con_info){
 	  ofLogWarning("ofxHttpServer") << "request completed NULL connection";
@@ -136,8 +139,6 @@ void ofxHTTPServer::request_completed (void *cls, struct MHD_Connection *connect
   if (con_info->connectiontype == POST){
       MHD_destroy_post_processor (con_info->postprocessor);
   }
-
-
 
   delete con_info;
   *con_cls = NULL;
@@ -356,6 +357,11 @@ int ofxHTTPServer::answer_to_connection(void *cls,
 	// if the extension of the url is any other try to serve a file
 	}else{
 		ofLogVerbose("ofxHttpServer") << method << " serving from filesystem: " << strurl << endl;
+
+		RequestInfo info;
+		info.url = strurl;
+		ofNotifyEvent(eventRequestReceived, info, &instance);
+
 		if(strurl=="/") strurl = "/index.html";
 
 		ofFile file(instance.fsRoot + strurl,ofFile::ReadOnly,true);

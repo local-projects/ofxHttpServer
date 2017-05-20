@@ -27,6 +27,8 @@ extern "C" {
 #include "ofMain.h"
 #include <map>
 
+
+
 class ofxHTTPServerResponse{
 public:
 	ofxHTTPServerResponse(){
@@ -63,6 +65,9 @@ public:
 
 	virtual ~ofxHTTPServer();
 
+	struct RequestInfo{
+		string url;
+	};
 
 	void start(unsigned port = 8888, bool threaded=false);
 	void stop();
@@ -81,6 +86,9 @@ public:
 				struct MHD_Connection *connection, const char *url,
 				const char *method, const char *version, const char *upload_data,
 				size_t *upload_data_size, void **con_cls);
+
+	//this will trigger from a thread, so be aware!
+	static ofEvent<ofxHTTPServer::RequestInfo> eventRequestReceived;
 
 private:
 	static ofxHTTPServer instance;
