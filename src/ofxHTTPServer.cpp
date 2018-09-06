@@ -212,6 +212,7 @@ void ofxHTTPServer::setAllowed_IP_List( vector<string> listOfIPs){
 
 int ofxHTTPServer::on_client_connect(void* cls, const sockaddr* addr, socklen_t addrlen){
 
+	#ifndef _WIN32 //whitelist only works on windows! todo!
 	if (allowedIPs.size() > 0){
 		char buf[INET6_ADDRSTRLEN];
 		string ip = inet_ntop(addr->sa_family, addr->sa_data + 2, buf, INET6_ADDRSTRLEN);
@@ -223,6 +224,9 @@ int ofxHTTPServer::on_client_connect(void* cls, const sockaddr* addr, socklen_t 
 		}
 	}
 	return MHD_YES;
+#else
+	return MHD_YES;
+#endif
 }
 
 

@@ -8,6 +8,12 @@
 #ifndef OFXHTTPSERVER_H_
 #define OFXHTTPSERVER_H_
 
+
+extern "C" {
+	#include "platform.h"
+	#include "microhttpd.h"
+}
+
 #include <cstdarg>
 #include <set>
 
@@ -19,9 +25,6 @@
    #include <sys/socket.h>
 #endif
 
-extern "C" {
-	#include "microhttpd.h"
-}
 
 #include "Poco/Condition.h"
 #include "ofMain.h"
