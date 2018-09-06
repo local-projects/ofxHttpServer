@@ -195,7 +195,7 @@ ofxHTTPServer::ofxHTTPServer() {
 	maxClients = 100;
 	numClients = 0;
 	maxActiveClients = 4;
-	uploadDir = ofToDataPath("",true);
+	//uploadDir = ofToDataPath("",true);
 	http_daemon = NULL;
 	port = 8888;
 	listener = NULL;
