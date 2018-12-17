@@ -9,10 +9,6 @@
 #define OFXHTTPSERVER_H_
 
 
-extern "C" {
-	#include "platform.h"
-	#include "microhttpd.h"
-}
 
 #include <cstdarg>
 #include <set>
@@ -22,15 +18,24 @@ extern "C" {
    #include <ws2tcpip.h>
    #include <stdint.h>
 #else
-   #include <sys/socket.h>
+	#include <libc.h>
+	#include <netinet/in.h>
+	#include <stdarg.h>
+	#include <stdint.h>
+	#include <sys/types.h>
+	#include <unistd.h>
+	#include <sys/time.h>
+	#include <sys/socket.h>
 #endif
 
+extern "C" {
+#include "platform.h"
+#include "microhttpd.h"
+}
 
 #include "Poco/Condition.h"
 #include "ofMain.h"
 #include <map>
-
-
 
 class ofxHTTPServerResponse{
 public:

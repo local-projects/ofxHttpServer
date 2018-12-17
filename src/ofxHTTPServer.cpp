@@ -265,7 +265,13 @@ int ofxHTTPServer::answer_to_connection(void *cls,
 		if(MHD_lookup_connection_value(connection, MHD_HEADER_KIND, CONTENT_TYPE)!=NULL)
 			contentType = MHD_lookup_connection_value(connection, MHD_HEADER_KIND, CONTENT_TYPE);
 		if ( contentType.size()>31 && contentType.substr(0,31) == "multipart/form-data; boundary=\""){
-			contentType = "multipart/form-data; boundary="+contentType.substr(31,contentType.size()-32);
+			
+			
+			// Temp kludge to avoid hitting the __move_assign string library bug
+			//contentType = "multipart/form-data; boundary=" + ofUTF8Substring(contentType, 31, contentType.size()-32);
+			//contentType = "multipart/form-data; boundary="+contentType.substr(31,contentType.size()-32);
+			
+			
 			ofLogVerbose("ofxHttpServer") << "changing content type: " << contentType << endl;
 			strcpy(con_info->new_content_type,contentType.c_str());
 			MHD_set_connection_value(connection,MHD_HEADER_KIND,CONTENT_TYPE,con_info->new_content_type);
